@@ -30,11 +30,15 @@ create table if not exists parent_child_table
 create table if not exists roles_table
 (
   role_id integer not null,
-  user_fk integer not null,
   role varchar(20) not null,
-  constraint "roles_pk" primary key (role_id),
-  constraint "role_user_fk" foreign key (user_fk) references users_table (user_id),
-  check (role IN ('PARENT', 'KID'))
+  constraint "roles_pk" primary key (role_id)
 );
 
 create sequence if not exists roles_seq start with 1 increment by 1;
+
+create table if not exists user_role_table
+(
+  user_id integer not null,
+  role_id integer not null,
+  constraint "user_role_pk" primary key (user_id, role_id)
+);

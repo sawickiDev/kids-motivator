@@ -30,12 +30,16 @@ insert into parent_child_table values
   (4, 9);
 
 insert into roles_table values
-  (nextval('roles_seq'), 1, 'PARENT'),
-  (nextval('roles_seq'), 2, 'PARENT'),
-  (nextval('roles_seq'), 3, 'PARENT'),
-  (nextval('roles_seq'), 4, 'PARENT'),
-  (nextval('roles_seq'), 5, 'KID'),
-  (nextval('roles_seq'), 6, 'KID'),
-  (nextval('roles_seq'), 7, 'KID'),
-  (nextval('roles_seq'), 8, 'KID'),
-  (nextval('roles_seq'), 9, 'KID');
+  (nextval('roles_seq'), 'PARENT'),
+  (nextval('roles_seq'), 'KID');
+
+insert into user_role_table values
+  (1, 1),
+  (2, 1),
+  (3, 1),
+  (4, 1),
+  (5, 2),
+  (6, 2),
+  (7, 2),
+  (8, 2),
+  (9, 2);
