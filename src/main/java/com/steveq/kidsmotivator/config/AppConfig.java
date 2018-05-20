@@ -12,11 +12,6 @@ import org.springframework.web.servlet.view.JstlView;
 @Configuration
 public class AppConfig implements WebMvcConfigurer {
 
-    @Override
-    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-        configurer.enable();
-    }
-
     @Bean
     public ViewResolver viewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
@@ -26,16 +21,9 @@ public class AppConfig implements WebMvcConfigurer {
         return viewResolver;
     }
 
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry
-//                .addResourceHandler("/webjars/**")
-//                .addResourceLocations("/webjars/");
-//    }
-
-//    @Override
-//    public void addViewControllers(ViewControllerRegistry registry) {
-//        registry.addViewController("/km-login").setViewName("km-login");
-//        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
-//    }
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/km-login").setViewName("km-login");
+        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
+    }
 }

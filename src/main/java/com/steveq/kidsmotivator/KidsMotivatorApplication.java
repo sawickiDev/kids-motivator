@@ -2,18 +2,9 @@ package com.steveq.kidsmotivator;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "com.steveq.kidsmotivator")
-public class KidsMotivatorApplication extends SpringBootServletInitializer {
-
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(KidsMotivatorApplication.class);
-    }
+public class KidsMotivatorApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(KidsMotivatorApplication.class, args);

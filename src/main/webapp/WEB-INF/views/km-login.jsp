@@ -7,6 +7,9 @@
     <head>
         <title>Kids Motivator Login</title>
 
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
         <script src="/webjars/jquery/3.0.0/jquery.js"></script>
         <link rel="stylesheet" type="text/css"
               href="/webjars/bootstrap/4.0.0/css/bootstrap.css" />
