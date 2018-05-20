@@ -12,8 +12,10 @@ create table if not exists users_table
   user_id integer not null,
   first_name varchar(40) not null,
   last_name varchar(40) not null,
+  user_name varchar(40) not null,
   active boolean not null default true,
   password_id integer not null,
+  constraint "username_uni" unique (user_name),
   constraint "user_pk" primary key (user_id),
   constraint "user_pass_fk" foreign key (password_id) references passwords_table (password_id)
 );

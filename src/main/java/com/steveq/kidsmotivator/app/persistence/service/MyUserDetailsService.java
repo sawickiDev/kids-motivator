@@ -16,11 +16,12 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        String[] names = s.trim().split(" ");
+        System.out.println("USERNAME :: " + s);
+//        String[] names = s.trim().split(" ");
         User user = null;
 
-        if (names.length > 0 && names.length < 3)
-            user = userRepository.findByFirstNameAndLastName(names[0], names[1]);
+        if (s.length() > 3)
+            user = userRepository.findByUserName(s);
 
         if (user == null)
             throw new IllegalArgumentException("PROVIDED USERNAME IS INCORRECT");

@@ -27,17 +27,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider());
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authenticationProvider =
-                new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService);
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
-        return authenticationProvider;
-    }
+//    @Bean
+//    public DaoAuthenticationProvider authenticationProvider() {
+//        DaoAuthenticationProvider authenticationProvider =
+//                new DaoAuthenticationProvider();
+//        authenticationProvider.setUserDetailsService(userDetailsService);
+//        authenticationProvider.setPasswordEncoder(passwordEncoder());
+//        return authenticationProvider;
+//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -49,7 +49,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .authorizeRequests()
                 .anyRequest().authenticated()
-                .and()
-            .formLogin();
+            .and()
+            .formLogin()
+                .permitAll()
+                .loginPage("/km-login")
+                .loginProcessingUrl("/km-auth")
+                .failureUrl("/login?error=true")
+                .defaultSuccessUrl("/dashboard")
+            .and()
+            .logout()
+                .permitAll()
+                .logoutUrl("/logout-page")
+                .logoutSuccessUrl("/login")
+                .deleteCookies("JSESSIONID");
     }
 }

@@ -23,6 +23,9 @@ public class User implements UserDetails {
     @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "user_name")
+    private String userName;
+
     @Column(name = "active")
     private Boolean active;
 
@@ -30,7 +33,8 @@ public class User implements UserDetails {
     @JoinColumn(name = "password_id")
     private Password pass;
 
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.EAGER,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "user_role_table",
             joinColumns = { @JoinColumn(name = "user_id") },
@@ -98,14 +102,26 @@ public class User implements UserDetails {
         this.pass = password;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", userName='" + userName + '\'' +
                 ", active=" + active +
-                ", password=" + pass +
+                ", pass=" + pass +
+                ", roles=" + roles +
+                ", children=" + children +
+                ", parents=" + parents +
                 '}';
     }
 
@@ -125,7 +141,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return firstName + " " + lastName;
+        return userName;
     }
 
     @Override
