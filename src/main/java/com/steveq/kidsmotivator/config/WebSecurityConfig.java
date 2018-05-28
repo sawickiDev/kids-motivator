@@ -25,7 +25,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+        // Password Encoder only for POSTGRESQL
+        // auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userService);
     }
 
     @Bean
@@ -36,20 +38,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .authorizeRequests()
-                .anyRequest().authenticated()
-            .and()
-            .formLogin()
-                .permitAll()
-                .loginPage("/km-login")
-                .loginProcessingUrl("/km-auth")
-                .failureUrl("/login?error=true")
-                .defaultSuccessUrl("/dashboard", true)
-            .and()
-            .logout()
-                .permitAll()
-                .logoutUrl("/logout-page")
-                .logoutSuccessUrl("/login")
-                .deleteCookies("JSESSIONID");
+            .authorizeRequests().anyRequest()
+            .permitAll();
+//
+//        http
+//            .authorizeRequests()
+//                .anyRequest().authenticated()
+//            .and()
+//            .formLogin()
+//                .permitAll()
+//                .loginPage("/km-login")
+//                .loginProcessingUrl("/km-auth")
+//                .failureUrl("/login?error=true")
+//                .defaultSuccessUrl("/dashboard", true)
+//            .and()
+//            .logout()
+//                .permitAll()
+//                .logoutUrl("/logout-page")
+//                .logoutSuccessUrl("/login")
+//                .deleteCookies("JSESSIONID");
     }
 }

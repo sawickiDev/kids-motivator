@@ -1,24 +1,24 @@
-insert into passwords_table values
-  (nextval('passwords_seq'), crypt('mbebenek', gen_salt('bf', 11))),
-  (nextval('passwords_seq'), crypt('abebenek', gen_salt('bf', 11))),
-  (nextval('passwords_seq'), crypt('jklepacz', gen_salt('bf', 11))),
-  (nextval('passwords_seq'), crypt('wnowak', gen_salt('bf', 11))),
-  (nextval('passwords_seq'), crypt('abebenek', gen_salt('bf', 11))),
-  (nextval('passwords_seq'), crypt('pbebenek', gen_salt('bf', 11))),
-  (nextval('passwords_seq'), crypt('aklepacz', gen_salt('bf', 11))),
-  (nextval('passwords_seq'), crypt('enowak', gen_salt('bf', 11))),
-  (nextval('passwords_seq'), crypt('anowak', gen_salt('bf', 11)));
+insert into passwords_table (password) values
+  ('mbebenek'),
+  ('abebenek'),
+  ('jklepacz'),
+  ('wnowak'),
+  ('abebenek'),
+  ('pbebenek'),
+  ('aklepacz'),
+  ('enowak'),
+  ('anowak');
 
-insert into users_table values
-  (nextval('users_seq'), 'Marian', 'Bebenek', 'mbebenek', true, 1),
-  (nextval('users_seq'), 'Alicja', 'Bebenek', 'albebenek', true, 2),
-  (nextval('users_seq'), 'Jan', 'Klepacz', 'jklepacz', true, 3),
-  (nextval('users_seq'), 'Wanda', 'Nowak', 'wnowak', true, 4),
-  (nextval('users_seq'), 'Adam', 'Bebenek', 'adbebenek', true, 5),
-  (nextval('users_seq'), 'Pawel', 'Bebenek', 'pbebenek', true, 6),
-  (nextval('users_seq'), 'Armand', 'Klepacz', 'aklepacz', true, 7),
-  (nextval('users_seq'), 'Ewa', 'Nowak', 'enowak', true, 8),
-  (nextval('users_seq'), 'Alicja', 'Nowak', 'anowak', true, 9);
+insert into users_table (first_name, last_name, user_name, active, password_id) values
+  ('Marian', 'Bebenek', 'mbebenek', true, 1),
+  ('Alicja', 'Bebenek', 'albebenek', true, 2),
+  ('Jan', 'Klepacz', 'jklepacz', true, 3),
+  ('Wanda', 'Nowak', 'wnowak', true, 4),
+  ('Adam', 'Bebenek', 'adbebenek', true, 5),
+  ('Pawel', 'Bebenek', 'pbebenek', true, 6),
+  ('Armand', 'Klepacz', 'aklepacz', true, 7),
+  ('Ewa', 'Nowak', 'enowak', true, 8),
+  ('Alicja', 'Nowak', 'anowak', true, 9);
 
 insert into parent_child_table values
   (1, 5),
@@ -29,9 +29,9 @@ insert into parent_child_table values
   (4, 8),
   (4, 9);
 
-insert into roles_table values
-  (nextval('roles_seq'), 'PARENT'),
-  (nextval('roles_seq'), 'KID');
+insert into roles_table (role)values
+  ('PARENT'),
+  ('KID');
 
 insert into user_role_table values
   (1, 1),
