@@ -17,26 +17,33 @@
 
     </head>
     <body class="page-container">
-        <div class="container-fluid">
-            <div class="row">
-                <span class="glyphicon glyphicon-fire" aria-hidden="true"></span>
+        <div class="container-fluid" style="padding: 0;">
+            <nav class="navbar navbar-light kd-navbar">
+                <span class="navbar-brand mb-0 h1" style="color:white;">Kids Motivator</span>
+            </nav>
+            <div class="row justify-content-center col-12" style="margin-top: 160px">
+                <form:form
+                        class="form-background p-4"
+                        action="${pageContext.request.contextPath}/km-auth"
+                        method="POST">
+
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="username-id-label">Name</span>
+                        </div>
+                        <input class="form-control" id="username-id" name="username" />
+                    </div>
+
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="password-id-label">Password</span>
+                        </div>
+                        <input class="form-control" id="password-id" type="password" name="password" />
+                    </div>
+
+                    <input class="btn btn-light btn-sm btn-block" type="submit" value="Submit" />
+                </form:form>
             </div>
-            <form:form
-                    action="${pageContext.request.contextPath}/km-auth"
-                    method="POST">
-
-                <div class="form-group">
-                    <label for="username-id">Username</label>
-                    <input id="username-id" name="username" />
-                </div>
-
-                <div class="form-group">
-                    <label for="password-id">Password</label>
-                    <input id="password-id" type="password" name="password" />
-                </div>
-
-                <input class="btn btn-primary" type="submit" value="Submit" />
-            </form:form>
         </div>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>

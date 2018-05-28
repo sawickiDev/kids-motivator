@@ -1,3 +1,12 @@
 .page-container {
-    background-color: #0A328D;
+    background-color: #6274C8;
+}
+
+.form-background {
+    background-color: #4457B0;
+    border-radius: 5px;
+}
+
+.kd-navbar {
+    background-color: #2A3F9F;
 }

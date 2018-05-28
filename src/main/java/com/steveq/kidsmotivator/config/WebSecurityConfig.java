@@ -37,25 +37,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+        String[] resources = new String[]{
+                "/css/**"
+        };
+
         http
-            .authorizeRequests().anyRequest()
-            .permitAll();
-//
-//        http
-//            .authorizeRequests()
-//                .anyRequest().authenticated()
-//            .and()
-//            .formLogin()
-//                .permitAll()
-//                .loginPage("/km-login")
-//                .loginProcessingUrl("/km-auth")
-//                .failureUrl("/login?error=true")
-//                .defaultSuccessUrl("/dashboard", true)
-//            .and()
-//            .logout()
-//                .permitAll()
-//                .logoutUrl("/logout-page")
-//                .logoutSuccessUrl("/login")
-//                .deleteCookies("JSESSIONID");
+            .authorizeRequests()
+                .antMatchers(resources).permitAll()
+                .anyRequest().authenticated()
+            .and()
+            .formLogin()
+                .permitAll()
+                .loginPage("/km-login")
+                .loginProcessingUrl("/km-auth")
+                .failureUrl("/login?error=true")
+                .defaultSuccessUrl("/dashboard", true)
+            .and()
+            .logout()
+                .permitAll()
+                .logoutUrl("/logout-page")
+                .logoutSuccessUrl("/login")
+                .deleteCookies("JSESSIONID");
     }
 }
