@@ -17,7 +17,7 @@
     </head>
     <body class="page-container">
         <div class="container-fluid" style="padding: 0;">
-            <nav class="navbar navbar-light kd-navbar">
+            <nav class="navbar navbar-dark bg-dark">
                 <span class="navbar-brand mb-0 h1" style="color:white;">Kids Motivator</span>
             </nav>
             <div class="row justify-content-center col-12" style="margin-top: 160px">
