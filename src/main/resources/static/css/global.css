@@ -1,3 +1,5 @@
+/* css schema on palleton.com base color #8260C8 - ADJACENT COLOR */
+
 .page-container {
     background-color: #6274C8;
 }
@@ -9,4 +11,12 @@
 
 .kd-navbar {
     background-color: #2A3F9F;
+}
+
+.kd-error-box {
+    background-color: #FF4C4C;
+    padding: 5px;
+    border-radius: 5px;
+    color: #9A0703;
+    margin-bottom: 15px;
 }

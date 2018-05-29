@@ -1,6 +1,7 @@
 package com.steveq.kidsmotivator.app.persistence.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "passwords_table")
@@ -12,6 +13,7 @@ public class Password {
     @Column(name = "password_id")
     private int id;
 
+    @NotNull
     @Column(name = "password")
     private String password;
 

@@ -1,4 +1,3 @@
-<%@ page import="java.util.ResourceBundle" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -27,6 +26,12 @@
                         action="${pageContext.request.contextPath}/km-auth"
                         method="POST">
 
+                    <c:if test="${param.error != null}">
+                        <div class="kd-error-box">
+                            Incorrect Credentials
+                        </div>
+                    </c:if>
+
                     <div class="input-group input-group-sm mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="username-id-label">Name</span>
@@ -41,7 +46,7 @@
                         <input class="form-control" id="password-id" type="password" name="password" />
                     </div>
 
-                    <input class="btn btn-light btn-sm btn-block" type="submit" value="Submit" />
+                    <input class="btn btn-light btn-sm btn-block" type="submit" value="Log In" />
                 </form:form>
             </div>
         </div>

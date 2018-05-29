@@ -51,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .loginPage("/km-login")
                 .loginProcessingUrl("/km-auth")
-                .failureUrl("/login?error=true")
+                .failureUrl("/km-login?error=true")
                 .defaultSuccessUrl("/dashboard", true)
             .and()
             .logout()

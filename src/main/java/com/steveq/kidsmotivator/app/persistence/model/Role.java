@@ -1,6 +1,7 @@
 package com.steveq.kidsmotivator.app.persistence.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,6 +15,7 @@ public class Role {
     @Column(name = "role_id")
     private int id;
 
+    @NotNull
     @Column(name = "role")
     private String role;
 
