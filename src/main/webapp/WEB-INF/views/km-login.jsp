@@ -17,37 +17,43 @@
     </head>
     <body class="page-container">
         <div class="container-fluid" style="padding: 0;">
-            <nav class="navbar navbar-light kd-navbar">
+            <nav class="navbar navbar-dark bg-dark">
                 <span class="navbar-brand mb-0 h1" style="color:white;">Kids Motivator</span>
             </nav>
+
             <div class="row justify-content-center col-12" style="margin-top: 160px">
-                <form:form
-                        class="form-background p-4"
-                        action="${pageContext.request.contextPath}/km-auth"
-                        method="POST">
+                <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Log In</div>
+                    <div class="card-body">
+                        <form:form
+                                action="${pageContext.request.contextPath}/km-auth"
+                                method="POST">
 
-                    <c:if test="${param.error != null}">
-                        <div class="kd-error-box">
-                            Incorrect Credentials
-                        </div>
-                    </c:if>
+                            <c:if test="${param.error != null}">
+                                <div class="kd-error-box">
+                                    Incorrect Credentials
+                                </div>
+                            </c:if>
 
-                    <div class="input-group input-group-sm mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="username-id-label">Name</span>
-                        </div>
-                        <input class="form-control" id="username-id" name="username" />
+                            <div class="input-group input-group-sm mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="username-id-label">Name</span>
+                                </div>
+                                <input class="form-control" id="username-id" name="username" />
+                            </div>
+
+                            <div class="input-group input-group-sm mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="password-id-label">Password</span>
+                                </div>
+                                <input class="form-control" id="password-id" type="password" name="password" />
+                            </div>
+
+                            <input class="btn btn-light btn-sm btn-block" type="submit" value="Log In" />
+                        </form:form>
                     </div>
+                </div>
 
-                    <div class="input-group input-group-sm mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="password-id-label">Password</span>
-                        </div>
-                        <input class="form-control" id="password-id" type="password" name="password" />
-                    </div>
-
-                    <input class="btn btn-light btn-sm btn-block" type="submit" value="Log In" />
-                </form:form>
             </div>
         </div>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
