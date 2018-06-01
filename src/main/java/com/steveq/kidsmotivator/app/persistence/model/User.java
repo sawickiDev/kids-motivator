@@ -73,6 +73,12 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "owner")
     private Set<Mission> ownedMissions;
 
+    @Transient
+    private int sumPoints;
+
+    @Transient
+    private int sumMissions;
+
     public User(){}
 
     public User(String firstName, String lastName, Boolean active, Password password) {
@@ -183,6 +189,40 @@ public class User implements UserDetails {
     public void addMission(Mission mission) {
         if (mission != null)
             this.missions.add(mission);
+    }
+
+    public Set<Mission> getOwnedMissions() {
+        return ownedMissions;
+    }
+
+    public void setOwnedMissions(Set<Mission> ownedMissions) {
+        this.ownedMissions = ownedMissions;
+    }
+
+    public int getSumPoints() {
+        int sum = 0;
+        for (Mission mission : this.missions) {
+            if (mission.getStage().equals(Mission.STAGE.DONE.name()))
+                sum += mission.getValue();
+        }
+        return sum;
+    }
+
+    public void setSumPoints(int sumPoints) {
+        this.sumPoints = sumPoints;
+    }
+
+    public int getSumMissions() {
+        int sum = 0;
+        for (Mission mission : this.missions) {
+            if (mission.getStage().equals(Mission.STAGE.ASSIGNED.name()))
+                sum += 1;
+        }
+        return sum;
+    }
+
+    public void setSumMissions(int sumMissions) {
+        this.sumMissions = sumMissions;
     }
 
     @Override

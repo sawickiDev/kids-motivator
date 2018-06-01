@@ -1,8 +1,11 @@
 package com.steveq.kidsmotivator.app.dashboard.controller;
 
+import com.steveq.kidsmotivator.app.missions.model.Mission;
+import com.steveq.kidsmotivator.app.missions.service.MissionService;
 import com.steveq.kidsmotivator.app.persistence.model.User;
 import com.steveq.kidsmotivator.app.persistence.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -21,6 +25,9 @@ public class DashboardController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private MissionService missionService;
 
     @GetMapping("/dashboard")
     public String openDashboard(Model model) {
@@ -33,7 +40,34 @@ public class DashboardController {
 
         if (kids != null
             && !kids.isEmpty()) {
-                model.addAttribute("managedKids", kids);
+                model.addAttribute("kidsList", kids);
+        }
+
+        userService.getCurrentlyLoggedUser();
+
+        System.out.println("MISSIONS ASS :: " + userService.getCurrentlyLoggedUser().getAuthorities());
+        List<GrantedAuthority> auths = (List<GrantedAuthority>) userService.getCurrentlyLoggedUser().getAuthorities();
+        for (GrantedAuthority ga : auths){
+            if (ga.getAuthority().equals("KID")) {
+                System.out.println("MISSIONS ASS :: ");
+                List<Mission> assignedMissions = missionService.getAssignedForUser(userService.getCurrentlyLoggedUser());
+                model.addAttribute("missions", assignedMissions);
+                model.addAttribute("curKid", userService.getCurrentlyLoggedUser());
+                System.out.println("MISSIONS ASS :: " + assignedMissions);
+
+                List<String> stages = new ArrayList<>();
+
+                for (Mission.STAGE stage : Mission.STAGE.values()){
+                    stages.add(stage.name());
+                }
+
+                System.out.println("STAGES :: " + stages);
+
+                model.addAttribute("stages", stages);
+                if(!model.containsAttribute("updateMission")){
+                    model.addAttribute("updateMission", new Mission());
+                }
+            }
         }
 
         return "dashboard";

@@ -6,6 +6,7 @@ import com.steveq.kidsmotivator.app.missions.service.MissionService;
 import com.steveq.kidsmotivator.app.persistence.model.User;
 import com.steveq.kidsmotivator.app.persistence.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -74,10 +75,21 @@ public class MissionController {
                                        RedirectAttributes redirectAttributes) {
         Mission missionToUpdate = missionRepository.findFirstById(Integer.valueOf(missionId));
 
-        redirectAttributes.addFlashAttribute("mission", missionToUpdate);
+        redirectAttributes.addFlashAttribute("updateMission", missionToUpdate);
         System.out.println("MISSION TO UPDATE :: " + missionToUpdate);
 
         return new RedirectView("/missions");
+    }
+
+    @GetMapping("/stage-update-mission/{missionId}")
+    public RedirectView stageUpdateMission (@PathVariable String missionId,
+                                            RedirectAttributes redirectAttributes) {
+
+        Mission missionToUpdate = missionRepository.findFirstById(Integer.valueOf(missionId));
+
+        redirectAttributes.addFlashAttribute("updateMission", missionToUpdate);
+
+        return new RedirectView("/dashboard");
     }
 
     @PostMapping("/add-mission")
@@ -97,11 +109,12 @@ public class MissionController {
         if (savedMission == null)
             redirectAttributes.addFlashAttribute("saveMissionError", true);
 
-        return new RedirectView("missions");
-    }
-
-    @PostMapping("/update-mission")
-    public RedirectView updateMission (@Valid @ModelAttribute("updateMission") Mission mission) {
+        List<GrantedAuthority> auths = (List<GrantedAuthority>) userService.getCurrentlyLoggedUser().getAuthorities();
+        for (GrantedAuthority ga : auths){
+            if (ga.getAuthority().equals("KID")) {
+                return new RedirectView("dashboard");
+            }
+        }
 
         return new RedirectView("missions");
     }

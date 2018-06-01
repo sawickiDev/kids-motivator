@@ -2,9 +2,12 @@ package com.steveq.kidsmotivator.app.missions.service;
 
 import com.steveq.kidsmotivator.app.missions.dao.MissionRepository;
 import com.steveq.kidsmotivator.app.missions.model.Mission;
+import com.steveq.kidsmotivator.app.persistence.model.User;
 import com.steveq.kidsmotivator.app.persistence.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class MissionServiceImpl implements MissionService {
@@ -19,7 +22,11 @@ public class MissionServiceImpl implements MissionService {
     public Mission saveMission(Mission mission) {
         Mission persistedMission = null;
 
-        mission.setStage(Mission.STAGE.OPEN.name());
+        System.out.println("MISSION TO UPDATE :: " + mission);
+
+        if (mission.getStage().isEmpty())
+            mission.setStage(Mission.STAGE.OPEN.name());
+
         mission.setOwner(userService.getCurrentlyLoggedUser());
 
         if (mission.getAssignedId() >= 0) {
@@ -39,5 +46,11 @@ public class MissionServiceImpl implements MissionService {
     public void deleteMissionById(Integer missionId) {
         Mission mission = missionRepository.findFirstById(missionId);
         missionRepository.delete(mission);
+    }
+
+    @Override
+    public List<Mission> getAssignedForUser(User user) {
+        System.out.println("ASSIGNED KID :: " + user.getId());
+        return missionRepository.findAllByAssignedKid(user);
     }
 }
