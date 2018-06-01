@@ -38,3 +38,17 @@ create table if not exists user_role_table
   role_id integer not null,
   constraint primary key (user_id, role_id)
 );
+
+create table if not exists missions_table
+(
+  mission_id integer not null auto_increment,
+  mission_title varchar(50) not null,
+  mission_description varchar(100) not null,
+  mission_stage varchar(10) not null default 'open',
+  mission_deadline date not null,
+  owner integer not null,
+  assignee integer,
+  constraint primary key (mission_id),
+  constraint foreign key (owner) references users_table (user_id),
+  constraint foreign key (assignee) references users_table (user_id)
+);
