@@ -1,6 +1,7 @@
 package com.steveq.kidsmotivator.app.persistence.model;
 
 import com.steveq.kidsmotivator.app.dashboard.validation.ValidPassword;
+import com.steveq.kidsmotivator.app.missions.model.Mission;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -65,6 +66,12 @@ public class User implements UserDetails {
 
     @ManyToMany(mappedBy = "children")
     private Set<User> parents = new HashSet<>();
+
+    @OneToMany(mappedBy = "assignedKid")
+    private Set<Mission> missions;
+
+    @OneToMany(mappedBy = "owner")
+    private Set<Mission> ownedMissions;
 
     public User(){}
 
@@ -165,6 +172,19 @@ public class User implements UserDetails {
         this.parents = parents;
     }
 
+    public Set<Mission> getMissions() {
+        return missions;
+    }
+
+    public void setMissions(Set<Mission> missions) {
+        this.missions = missions;
+    }
+
+    public void addMission(Mission mission) {
+        if (mission != null)
+            this.missions.add(mission);
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -212,6 +232,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return getActive();
     }
 }

@@ -18,17 +18,17 @@
     <body class="page-container">
         <div class="container-fluid" style="padding: 0;">
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <a class="navbar-brand" href="#"> Kids Motivator </a>
+                <a class="navbar-brand" href="${pageContext.request.contextPath}/dashboard"> Kids Motivator </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item active">
-                            <a class="nav-link" href="#"> Dashboard <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="${pageContext.request.contextPath}/dashboard"> Dashboard <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#"> Missions </a>
+                            <a class="nav-link" href="${pageContext.request.contextPath}/missions"> Missions </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#"> Prizes </a>
@@ -79,7 +79,7 @@
                 </c:choose>
                 <div class="row justify-content-center">
                     <div class="col-10">
-                        <div class="card text-white bg-dark mb-3">
+                        <div class="card text-white bg-secondary mb-3">
                             <div class="card-header">
                                 Register Kid
                             </div>
@@ -88,6 +88,11 @@
                                         modelAttribute="kid"
                                         action="${pageContext.request.contextPath}/register-kid"
                                         method="POST">
+                                    <c:if test="${saveKidError == true}">
+                                        <div class="alert alert-danger" role="alert">
+                                            COULDN'T REGISTER KID
+                                        </div>
+                                    </c:if>
                                     <div class="form-row">
                                         <div class="col-4">
                                             <label for="firstname-id">First name</label>

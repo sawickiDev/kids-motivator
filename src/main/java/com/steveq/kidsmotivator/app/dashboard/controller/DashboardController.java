@@ -4,14 +4,17 @@ import com.steveq.kidsmotivator.app.persistence.model.User;
 import com.steveq.kidsmotivator.app.persistence.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class DashboardController {
@@ -20,33 +23,43 @@ public class DashboardController {
     private UserService userService;
 
     @GetMapping("/dashboard")
-    public ModelAndView openDashboard() {
-        ModelAndView mav = new ModelAndView("dashboard");
-        mav.addObject("kid", new User());
-        return mav;
+    public String openDashboard(Model model) {
+
+        if(!model.containsAttribute("kid")){
+            model.addAttribute("kid", new User());
+        }
+
+        List<User> kids = userService.getKidsForParent();
+
+        if (kids != null
+            && !kids.isEmpty()) {
+                model.addAttribute("managedKids", kids);
+        }
+
+        return "dashboard";
     }
 
-    // TODO: Password Validation
     @PostMapping("/register-kid")
-    public String registerKid(@Valid @ModelAttribute("kid") User kid,
+    public RedirectView registerKid(@Valid @ModelAttribute("kid") User kid,
                                     BindingResult bindingResult,
-                                    RedirectAttributes redirectAttributes) {
+                                    RedirectAttributes redirectAttributes,
+                                    SessionStatus sessionStatus) {
 
         if(bindingResult.hasErrors()){
-            System.out.println("ERRORS");
-            System.out.println(bindingResult);
-            System.out.println(bindingResult.getAllErrors());
+            redirectAttributes.addFlashAttribute("kid", kid);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.kid", bindingResult);
 
-            return "dashboard";
+            return new RedirectView("dashboard");
         }
 
         User savedUser = userService.saveUser(kid);
 
-        if (savedUser == null) {
-            System.out.println("COULDNT SAVE CONTACT");
-        }
+        if (savedUser == null)
+            redirectAttributes.addFlashAttribute("saveKidError", true);
 
-        return "dashboard";
+        sessionStatus.setComplete();
+
+        return new RedirectView("dashboard");
     }
 
 }

@@ -10,6 +10,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -21,8 +25,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        System.out.println("USERNAME :: " + s);
-//        String[] names = s.trim().split(" ");
         User user = null;
 
         if (s.length() > 3)
@@ -58,10 +60,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getKidsForParent() {
+        User parent = this.getCurrentlyLoggedUser();
+        List<User> parents = new ArrayList<>();
+        parents.add(parent);
+        System.out.println("PARENTS :: " + parents);
+        List<User> kids = userRepository.findAllByParentsContains(parents);
+        System.out.println("KIDS :: " + kids);
+
+        return null;
+    }
+
+    @Override
     public User getCurrentlyLoggedUser() {
 
         String currentlyLoggedUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        System.out.println("authorities : " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
         User currentlyLoggedUser = (User)loadUserByUsername(currentlyLoggedUsername);
 
         return currentlyLoggedUser;
