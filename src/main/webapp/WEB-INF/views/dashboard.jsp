@@ -128,16 +128,17 @@
                                                             id="password-id"
                                                             placeholder="Password"
                                                             path="pass" />
-                                            <form:errors path="pass" cssStyle="color:#FF4C4C" />
+                                            <form:errors path="pass.password" cssStyle="color:#FF4C4C" />
                                         </div>
 
                                         <div class="col-4">
                                             <label for="cpassword-id">Confirm Password</label>
-                                            <input type="text" class="form-control"
-                                                   id="cpassword-id"
-                                                   type="password"
-                                                   placeholder="Password"
-                                                   name="pass">
+                                            <form:password  class="form-control"
+                                                            id="cpassword-id"
+                                                            placeholder="Password"
+                                                            path="pass.confirmPassword" />
+                                            <form:errors path="pass.confirmPassword" cssStyle="color:#FF4C4C" />
+                                            <form:errors path="pass" cssStyle="color:#FF4C4C" />
                                         </div>
                                     </div>
 

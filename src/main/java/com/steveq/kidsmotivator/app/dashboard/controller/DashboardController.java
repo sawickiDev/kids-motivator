@@ -1,4 +1,4 @@
-package com.steveq.kidsmotivator.app.dashboard;
+package com.steveq.kidsmotivator.app.dashboard.controller;
 
 import com.steveq.kidsmotivator.app.persistence.model.User;
 import com.steveq.kidsmotivator.app.persistence.service.UserService;
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
 
@@ -32,14 +31,12 @@ public class DashboardController {
     public String registerKid(@Valid @ModelAttribute("kid") User kid,
                                     BindingResult bindingResult,
                                     RedirectAttributes redirectAttributes) {
+
         if(bindingResult.hasErrors()){
             System.out.println("ERRORS");
             System.out.println(bindingResult);
             System.out.println(bindingResult.getAllErrors());
 
-//            redirectAttributes.addFlashAttribute("kid", kid);
-//            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.kid", bindingResult);
-//            return new RedirectView("dashboard");
             return "dashboard";
         }
 
@@ -49,7 +46,6 @@ public class DashboardController {
             System.out.println("COULDNT SAVE CONTACT");
         }
 
-//        return new RedirectView("dashboard");
         return "dashboard";
     }
 

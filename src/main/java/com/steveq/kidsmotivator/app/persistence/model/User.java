@@ -1,10 +1,12 @@
 package com.steveq.kidsmotivator.app.persistence.model;
 
+import com.steveq.kidsmotivator.app.dashboard.validation.ValidPassword;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.*;
@@ -39,6 +41,7 @@ public class User implements UserDetails {
     private Boolean active = true;
 
     @NotNull
+    @Valid
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "password_id")
     private Password pass;
