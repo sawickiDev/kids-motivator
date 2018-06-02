@@ -1,6 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -26,9 +27,11 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="${pageContext.request.contextPath}/dashboard"> Dashboard <span class="sr-only">(current)</span></a>
-                        </li>
+                        <sec:authorize access="hasAuthority('PARENT')">
+                            <li class="nav-item">
+                                <a class="nav-link" href="${pageContext.request.contextPath}/dashboard"> Dashboard <span class="sr-only">(current)</span></a>
+                            </li>
+                        </sec:authorize>
                         <li class="nav-item active">
                             <a class="nav-link" href="${pageContext.request.contextPath}/missions"> Missions </a>
                         </li>
@@ -46,7 +49,11 @@
                 </div>
             </nav>
             <div class="container mt-5">
-
+                <sec:authorize access="hasAuthority('KID')">
+                    <div class="row justify-content-center">
+                        <h2 style="color:lawngreen">Points Balance : ${curUser.sumPoints}</h2>
+                    </div>
+                </sec:authorize>
                 <c:choose>
                     <c:when test="${allMissions != null && allMissions.size() > 0}">
                             <div class="row justify-content-center">
@@ -62,11 +69,13 @@
                                                             cached
                                                         </i>
                                                     </a>
-                                                    <a href="${pageContext.request.contextPath}/delete-mission/${miss.id}" class="p-2" style="color:#b00003;">
-                                                        <i class="material-icons">
-                                                            delete_forever
-                                                        </i>
-                                                    </a>
+                                                    <sec:authorize access="hasAuthority('PARENT')">
+                                                        <a href="${pageContext.request.contextPath}/delete-mission/${miss.id}" class="p-2" style="color:#b00003;">
+                                                            <i class="material-icons">
+                                                                delete_forever
+                                                            </i>
+                                                        </a>
+                                                    </sec:authorize>
                                                 </div>
                                                 <div class="card-body">
                                                     <h5 style="color: lawngreen">${miss.value} points</h5>
@@ -115,44 +124,79 @@
                                     </c:if>
                                     <form:input type="hidden"
                                                 path="id"/>
-                                    <div class="form-group">
-                                        <label for="title-id">Mission Title</label>
-                                        <form:input type="text"
-                                                    class="form-control"
-                                                    id="title-id"
-                                                    placeholder="Mission Title"
-                                                    path="title" />
-                                        <form:errors path="title" cssStyle="color:#FF4C4C" />
-                                    </div>
 
-                                    <div class="form-group">
-                                        <label for="description-id">Mission Description</label>
-                                        <form:textarea  class="form-control"
-                                                        id="description-id"
+                                    <sec:authorize access="hasAuthority('PARENT')">
+                                        <div class="form-group">
+                                            <label for="title-id">Mission Title</label>
+                                            <form:input type="text"
+                                                        class="form-control"
+                                                        id="title-id"
+                                                        placeholder="Mission Title"
+                                                        path="title" />
+                                            <form:errors path="title" cssStyle="color:#FF4C4C" />
+                                        </div>
+                                    </sec:authorize>
+                                    <sec:authorize access="hasAuthority('KID')">
+                                        <div class="form-group">
+                                            <label for="description-id">Mission Title</label>
+                                            <form:input type="text"
+                                                        class="form-control"
+                                                        disabled="true"
+                                                        id="title-id"
+                                                        placeholder="Mission Title"
+                                                        path="title" />
+                                            <form:input  type="hidden"
+                                                        path="title" />
+                                            <form:errors path="title" cssStyle="color:#FF4C4C" />
+                                        </div>
+                                    </sec:authorize>
+
+                                    <sec:authorize access="hasAuthority('PARENT')">
+                                        <div class="form-group">
+                                            <label for="description-id">Mission Description</label>
+                                            <form:textarea  class="form-control"
+                                                            id="description-id"
+                                                            placeholder="Mission Description"
+                                                            path="description" />
+                                            <form:errors path="description" cssStyle="color:#FF4C4C" />
+                                        </div>
+                                    </sec:authorize>
+                                    <sec:authorize access="hasAuthority('KID')">
+                                        <form:input  type="hidden"
+                                                     path="description" />
+                                    </sec:authorize>
+
+                                    <sec:authorize access="hasAuthority('PARENT')">
+                                        <div class="form-group">
+                                            <label for="value-id">Mission Value</label>
+                                            <form:input type="number"
+                                                        class="form-control"
+                                                        id="value-id"
                                                         placeholder="Mission Description"
-                                                        path="description" />
-                                        <form:errors path="description" cssStyle="color:#FF4C4C" />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="value-id">Mission Value</label>
-                                        <form:input type="number"
-                                                    class="form-control"
-                                                    id="value-id"
-                                                    placeholder="Mission Description"
+                                                        path="value" />
+                                            <form:errors path="value" cssStyle="color:#FF4C4C" />
+                                        </div>
+                                    </sec:authorize>
+                                    <sec:authorize access="hasAuthority('KID')">
+                                        <form:input type="hidden"
                                                     path="value" />
-                                        <form:errors path="value" cssStyle="color:#FF4C4C" />
-                                    </div>
+                                    </sec:authorize>
 
-                                    <div class="form-group">
-                                        <label for="deadline-id">Deadline (YYYY-MM-DD)</label>
-                                        <form:input type="text"
-                                                    class="form-control"
-                                                    id="deadline-id"
-                                                    placeholder="Deadline (YYYY-MM-DD)"
+                                    <sec:authorize access="hasAuthority('PARENT')">
+                                        <div class="form-group">
+                                            <label for="deadline-id">Deadline (YYYY-MM-DD)</label>
+                                            <form:input type="text"
+                                                        class="form-control"
+                                                        id="deadline-id"
+                                                        placeholder="Deadline (YYYY-MM-DD)"
+                                                        path="dateFormat" />
+                                            <form:errors path="dateFormat" cssStyle="color:#FF4C4C" />
+                                        </div>
+                                    </sec:authorize>
+                                    <sec:authorize access="hasAuthority('KID')">
+                                        <form:input type="hidden"
                                                     path="dateFormat" />
-                                        <form:errors path="dateFormat" cssStyle="color:#FF4C4C" />
-                                    </div>
+                                    </sec:authorize>
 
                                     <div class="form-group mb-3">
                                         <label for="stage-id">Stage</label>
@@ -163,18 +207,36 @@
                                         </form:select>
                                     </div>
 
-                                    <div class="form-group mb-3">
-                                        <label for="stage-id">Asignee</label>
-                                        <form:select  cssClass="custom-select"
-                                                      path="assignedId"
-                                                      id="stage-id">
-                                            <form:option value="-1" label="---Select---" />
-                                            <form:options
-                                                    items="${kidsAvailable}"
-                                                    itemLabel="userName"
-                                                    itemValue="id" />
-                                        </form:select>
-                                    </div>
+                                    <sec:authorize access="hasAuthority('PARENT')">
+                                        <div class="form-group mb-3">
+                                            <label for="stage-id">Asignee</label>
+                                            <form:select  cssClass="custom-select"
+                                                          path="assignedId"
+                                                          id="stage-id">
+                                                <form:option value="-1" label="---Select---" />
+                                                <form:options
+                                                        items="${kidsAvailable}"
+                                                        itemLabel="userName"
+                                                        itemValue="id" />
+                                            </form:select>
+                                        </div>
+                                    </sec:authorize>
+                                    <sec:authorize access="hasAuthority('KID')">
+                                        <form:input type="hidden"
+                                                    path="assignedId" />
+                                    </sec:authorize>
+                                    <sec:authorize access="hasAuthority('KID')">
+                                        <form:input type="hidden"
+                                                    path="owner" />
+                                    </sec:authorize>
+                                    <sec:authorize access="hasAuthority('KID')">
+                                        <form:input type="hidden"
+                                                    path="assignedKid" />
+                                    </sec:authorize>
+                                    <sec:authorize access="hasAuthority('KID')">
+                                        <form:input type="hidden"
+                                                    path="assignedId" />
+                                    </sec:authorize>
 
                                     <input class="btn btn-outline-success" type="submit" value="SUBMIT" />
                                 </form:form>

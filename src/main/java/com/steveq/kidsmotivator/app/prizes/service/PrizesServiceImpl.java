@@ -55,7 +55,9 @@ public class PrizesServiceImpl implements PrizesService {
     @Override
     public Prize savePrize(Prize prize) {
         Prize savedPrize = null;
-        prize.setOwner(userService.getCurrentlyLoggedUser());
+
+        if (userService.isUserParent(userService.getCurrentlyLoggedUser()))
+            prize.setOwner(userService.getCurrentlyLoggedUser());
 
         try {
             savedPrize = prizesRepository.save(prize);

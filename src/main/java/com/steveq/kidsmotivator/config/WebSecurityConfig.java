@@ -55,6 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .authorizeRequests()
                 .antMatchers(resources).permitAll()
+                .antMatchers("/dashboard").hasAuthority("PARENT")
                 .anyRequest().authenticated()
             .and()
             .formLogin()
@@ -62,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/km-login")
                 .loginProcessingUrl("/km-auth")
                 .failureUrl("/km-login?error=true")
-                .defaultSuccessUrl("/dashboard", true)
+                .successHandler(new CustomAuthenticationSuccessHandler())
             .and()
             .logout()
                 .permitAll()

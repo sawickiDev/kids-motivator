@@ -77,6 +77,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "owner")
     private Set<Prize> ownedPrizes;
 
+    @OneToMany(mappedBy = "assignee")
+    private Set<Prize> takenPrizes;
+
     @Transient
     private int sumPoints;
 
@@ -203,11 +206,22 @@ public class User implements UserDetails {
         this.ownedMissions = ownedMissions;
     }
 
+    public Set<Prize> getTakenPrizes() {
+        return takenPrizes;
+    }
+
+    public void setTakenPrizes(Set<Prize> takenPrizes) {
+        this.takenPrizes = takenPrizes;
+    }
+
     public int getSumPoints() {
         int sum = 0;
         for (Mission mission : this.missions) {
             if (mission.getStage().equals(Mission.STAGE.DONE.name()))
                 sum += mission.getValue();
+        }
+        for (Prize prize : this.takenPrizes) {
+            sum -= prize.getValue();
         }
         return sum;
     }

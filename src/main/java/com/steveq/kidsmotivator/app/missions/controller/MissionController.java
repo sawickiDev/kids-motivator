@@ -36,16 +36,31 @@ public class MissionController {
 
     @GetMapping("/missions")
     public String openMissionPage (Model model) {
+        User currentUser = userService.getCurrentlyLoggedUser();
 
         if(!model.containsAttribute("mission")){
             model.addAttribute("mission", new Mission());
         }
+        List<Mission> missions = new ArrayList<>();
 
-        List<Mission> missions = missionRepository.findAllByOwner(userService.getCurrentlyLoggedUser());
+        if (userService.isUserParent(currentUser)) {
+            missions = missionRepository.findAllByOwner(userService.getCurrentlyLoggedUser());
+        } else if (userService.isUserKid(currentUser)) {
+            List<String> containingStages = new ArrayList<>();
+            containingStages.add("ASSIGNED");
+            containingStages.add("OVERDUE");
+            missions = missionRepository.findAllByAssignedKidAndStageIn(currentUser, containingStages);
+            model.addAttribute("curUser", currentUser);
+        }
 
         List<String> stages = new ArrayList<>();
 
         for (Mission.STAGE stage : Mission.STAGE.values()){
+
+            if (userService.isUserKid(currentUser)
+                && "open".equals(stage.name().toLowerCase())) {
+                continue;
+            }
             stages.add(stage.name());
         }
 
@@ -91,6 +106,8 @@ public class MissionController {
 
             return new RedirectView("/missions");
         }
+
+        System.out.println("SAAAVE MISSION :: " + mission);
 
         Mission savedMission = missionService.saveMission(mission);
 

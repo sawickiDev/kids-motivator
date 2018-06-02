@@ -1,5 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -26,9 +27,11 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="${pageContext.request.contextPath}/dashboard"> Dashboard <span class="sr-only">(current)</span></a>
-                        </li>
+                        <sec:authorize access="hasAuthority('PARENT')">
+                            <li class="nav-item">
+                                <a class="nav-link" href="${pageContext.request.contextPath}/dashboard"> Dashboard <span class="sr-only">(current)</span></a>
+                            </li>
+                        </sec:authorize>
                         <li class="nav-item">
                             <a class="nav-link" href="${pageContext.request.contextPath}/missions"> Missions </a>
                         </li>
@@ -67,11 +70,13 @@
                                                             cached
                                                         </i>
                                                     </a>
-                                                    <a href="${pageContext.request.contextPath}/delete-prize/${avPrize.id}" class="p-2" style="color:#b00003;">
-                                                        <i class="material-icons">
-                                                            delete_forever
-                                                        </i>
-                                                    </a>
+                                                    <sec:authorize access="hasAuthority('PARENT')">
+                                                        <a href="${pageContext.request.contextPath}/delete-prize/${avPrize.id}" class="p-2" style="color:#b00003;">
+                                                            <i class="material-icons">
+                                                                delete_forever
+                                                            </i>
+                                                        </a>
+                                                    </sec:authorize>
                                                 </div>
                                                 <div class="card-body">
                                                     <h5 style="color: lawngreen">${avPrize.value} points</h5>
@@ -171,16 +176,32 @@
                                     <form:input type="hidden"
                                                 path="id"/>
 
-                                    <div class="form-group">
+                                    <sec:authorize access="hasAuthority('PARENT')">
+                                        <div class="form-group">
+                                            <label for="title-id">Prize Name</label>
+                                            <form:input type="text"
+                                                        class="form-control"
+                                                        id="title-id"
+                                                        placeholder="Prize Name"
+                                                        path="name" />
+                                            <form:errors path="name" cssStyle="color:#FF4C4C" />
+                                        </div>
+                                    </sec:authorize>
+                                    <sec:authorize access="hasAuthority('KID')"><div class="form-group">
                                         <label for="title-id">Prize Name</label>
                                         <form:input type="text"
                                                     class="form-control"
+                                                    disabled="true"
                                                     id="title-id"
                                                     placeholder="Prize Name"
                                                     path="name" />
+                                        <form:input  type="hidden"
+                                                     path="name" />
                                         <form:errors path="name" cssStyle="color:#FF4C4C" />
                                     </div>
+                                    </sec:authorize>
 
+                                    <sec:authorize access="hasAuthority('PARENT')">
                                     <div class="form-group">
                                         <label for="value-id">Prize Value</label>
                                         <form:input type="number"
@@ -190,7 +211,16 @@
                                                     path="value" />
                                         <form:errors path="value" cssStyle="color:#FF4C4C" />
                                     </div>
+                                    </sec:authorize>
+                                    <sec:authorize access="hasAuthority('KID')">
+                                        <form:input  type="hidden"
+                                                     path="value" />
+                                    </sec:authorize>
 
+                                    <sec:authorize access="hasAuthority('KID')">
+                                        <form:input type="hidden"
+                                                    path="owner" />
+                                    </sec:authorize>
                                     <div class="form-group mb-3">
                                         <label for="stage-id">Assignee</label>
                                         <form:select  cssClass="custom-select"

@@ -172,10 +172,12 @@ public class Mission {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", stage='" + stage + '\'' +
+                ", value=" + value +
                 ", assignedKid=" + assignedKid +
                 ", owner=" + owner +
                 ", deadline=" + deadline +
                 ", dateFormat='" + dateFormat + '\'' +
+                ", assignedId=" + assignedId +
                 '}';
     }
 }

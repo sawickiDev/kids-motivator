@@ -12,4 +12,5 @@ public interface MissionRepository extends JpaRepository<Mission, Integer> {
     List<Mission> findAllByOwner(User owner);
     Mission findFirstById(Integer id);
     List<Mission> findAllByAssignedKid(User kid);
+    List<Mission> findAllByAssignedKidAndStageIn(User kid, List<String> stages);
 }

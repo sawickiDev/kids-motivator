@@ -27,9 +27,13 @@ public class MissionServiceImpl implements MissionService {
         if (mission.getStage().isEmpty())
             mission.setStage(Mission.STAGE.OPEN.name());
 
-        mission.setOwner(userService.getCurrentlyLoggedUser());
+        if (mission.getOwner() == null)
+            mission.setOwner(userService.getCurrentlyLoggedUser());
 
-        if (mission.getAssignedId() >= 0) {
+        System.out.println("ASSIGNED ID");
+
+        if (mission.getAssignedId() >= 0
+            && mission.getAssignedKid() == null) {
             mission.setAssignedKid(userService.getUserById(mission.getAssignedId()));
         }
 

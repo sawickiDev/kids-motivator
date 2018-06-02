@@ -49,13 +49,16 @@ public class PrizesController {
             users.add(currentlyLogged);
             prizesAvailable = prizesService.getPrizesAvailableByOwner(users);
             prizesTaken = prizesService.getPrizesTakenByOwner(users);
+            model.addAttribute("kidsAvailable", userService.getKidsForParent());
         }
         else if (userService.isUserKid(currentlyLogged)) {
             prizesAvailable = prizesService.getPrizesAvailableByOwner(currentlyLogged.getParents());
             prizesTaken = prizesService.getPrizesByAssignedKid(currentlyLogged);
+            List<User> availableUser = new ArrayList<>();
+            availableUser.add(currentlyLogged);
+            model.addAttribute("kidsAvailable", availableUser);
         }
 
-        model.addAttribute("kidsAvailable", userService.getKidsForParent());
         model.addAttribute("prizesAvailable", prizesAvailable);
         model.addAttribute("prizesTaken", prizesTaken);
 
@@ -67,11 +70,18 @@ public class PrizesController {
                                  BindingResult bindingResult,
                                  RedirectAttributes redirectAttributes) {
         System.out.println("SAVE PRIZE :: " + prize);
+        User currentlyLogged = userService.getCurrentlyLoggedUser();
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("prize", prize);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.prize", bindingResult);
 
             return new RedirectView("prizes");
+        }
+
+        if (userService.isUserKid(currentlyLogged)) {
+            if (currentlyLogged.getSumPoints() < prize.getValue()){
+                return new RedirectView("prizes");
+            }
         }
 
         System.out.println("SAVE PRIZE :: " + prize);

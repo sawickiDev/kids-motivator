@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,6 +24,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
@@ -45,6 +49,10 @@ public class UserServiceImpl implements UserService {
         Role kidRole = roleRepository.findRoleByRole("KID");
         user.addRole(kidRole);
         user.addParent(parentUser);
+        System.out.println("ENCODED PASS :: " + passwordEncoder.encode(user.getPass().getPassword()));
+        String encodedPassword = passwordEncoder.encode(user.getPass().getPassword());
+        user.getPass().setPassword(encodedPassword);
+        user.getPass().setConfirmPassword(encodedPassword);
 
         try{
             persistedUser = userRepository.save(user);

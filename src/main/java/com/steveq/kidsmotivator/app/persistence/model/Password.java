@@ -19,7 +19,7 @@ public class Password {
     private int id;
 
     @NotNull
-    @Size(min = 3, max = 30)
+    @Size(min = 3, max = 100)
     @Column(name = "password")
     private String password;
 
