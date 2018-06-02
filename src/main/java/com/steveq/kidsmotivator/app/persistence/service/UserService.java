@@ -10,4 +10,6 @@ public interface UserService extends UserDetailsService {
     User saveUser(User user);
     List<User> getKidsForParent();
     User getUserById(Integer id);
+    boolean isUserParent(User user);
+    boolean isUserKid(User user);
 }

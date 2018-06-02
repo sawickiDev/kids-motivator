@@ -43,33 +43,6 @@ public class DashboardController {
                 model.addAttribute("kidsList", kids);
         }
 
-        userService.getCurrentlyLoggedUser();
-
-        System.out.println("MISSIONS ASS :: " + userService.getCurrentlyLoggedUser().getAuthorities());
-        List<GrantedAuthority> auths = (List<GrantedAuthority>) userService.getCurrentlyLoggedUser().getAuthorities();
-        for (GrantedAuthority ga : auths){
-            if (ga.getAuthority().equals("KID")) {
-                System.out.println("MISSIONS ASS :: ");
-                List<Mission> assignedMissions = missionService.getAssignedForUser(userService.getCurrentlyLoggedUser());
-                model.addAttribute("missions", assignedMissions);
-                model.addAttribute("curKid", userService.getCurrentlyLoggedUser());
-                System.out.println("MISSIONS ASS :: " + assignedMissions);
-
-                List<String> stages = new ArrayList<>();
-
-                for (Mission.STAGE stage : Mission.STAGE.values()){
-                    stages.add(stage.name());
-                }
-
-                System.out.println("STAGES :: " + stages);
-
-                model.addAttribute("stages", stages);
-                if(!model.containsAttribute("updateMission")){
-                    model.addAttribute("updateMission", new Mission());
-                }
-            }
-        }
-
         return "dashboard";
     }
 

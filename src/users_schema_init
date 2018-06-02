@@ -61,3 +61,17 @@ create table if not exists missions_table
 );
 
 create sequence if not exists missions_seq start with 1 increment by 1;
+
+create table if not exists prizes_table
+(
+  prize_id integer not null,
+  prize_name varchar(30) not null,
+  prize_value integer not null,
+  owner integer not null,
+  assignee integer,
+  constraint "prize_pk" primary key (prize_id),
+  constraint "prize_owner_fk" foreign key (owner) references users_table (user_id),
+  constraint "prize_assignee_fk" foreign key (assignee) references users_table (user_id)
+);
+
+create sequence if not exists prizes_seq start with 1 increment by 1;

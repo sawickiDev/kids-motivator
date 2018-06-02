@@ -75,21 +75,9 @@ public class MissionController {
                                        RedirectAttributes redirectAttributes) {
         Mission missionToUpdate = missionRepository.findFirstById(Integer.valueOf(missionId));
 
-        redirectAttributes.addFlashAttribute("updateMission", missionToUpdate);
-        System.out.println("MISSION TO UPDATE :: " + missionToUpdate);
+        redirectAttributes.addFlashAttribute("mission", missionToUpdate);
 
         return new RedirectView("/missions");
-    }
-
-    @GetMapping("/stage-update-mission/{missionId}")
-    public RedirectView stageUpdateMission (@PathVariable String missionId,
-                                            RedirectAttributes redirectAttributes) {
-
-        Mission missionToUpdate = missionRepository.findFirstById(Integer.valueOf(missionId));
-
-        redirectAttributes.addFlashAttribute("updateMission", missionToUpdate);
-
-        return new RedirectView("/dashboard");
     }
 
     @PostMapping("/add-mission")
@@ -108,13 +96,6 @@ public class MissionController {
 
         if (savedMission == null)
             redirectAttributes.addFlashAttribute("saveMissionError", true);
-
-        List<GrantedAuthority> auths = (List<GrantedAuthority>) userService.getCurrentlyLoggedUser().getAuthorities();
-        for (GrantedAuthority ga : auths){
-            if (ga.getAuthority().equals("KID")) {
-                return new RedirectView("dashboard");
-            }
-        }
 
         return new RedirectView("missions");
     }

@@ -5,6 +5,7 @@ import com.steveq.kidsmotivator.app.persistence.dao.UserRepository;
 import com.steveq.kidsmotivator.app.persistence.model.Role;
 import com.steveq.kidsmotivator.app.persistence.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -77,6 +78,24 @@ public class UserServiceImpl implements UserService {
             return userRepository.findUserById(id);
 
         return null;
+    }
+
+    @Override
+    public boolean isUserParent(User user) {
+        for (GrantedAuthority ga : user.getAuthorities()) {
+            if ("PARENT".equals(ga.getAuthority()))
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isUserKid(User user) {
+        for (GrantedAuthority ga : user.getAuthorities()) {
+            if ("KID".equals(ga.getAuthority()))
+                return true;
+        }
+        return false;
     }
 
     @Override

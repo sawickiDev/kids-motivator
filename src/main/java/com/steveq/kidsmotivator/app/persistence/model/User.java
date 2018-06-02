@@ -2,6 +2,7 @@ package com.steveq.kidsmotivator.app.persistence.model;
 
 import com.steveq.kidsmotivator.app.dashboard.validation.ValidPassword;
 import com.steveq.kidsmotivator.app.missions.model.Mission;
+import com.steveq.kidsmotivator.app.prizes.model.Prize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -72,6 +73,9 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "owner")
     private Set<Mission> ownedMissions;
+
+    @OneToMany(mappedBy = "owner")
+    private Set<Prize> ownedPrizes;
 
     @Transient
     private int sumPoints;
@@ -223,6 +227,14 @@ public class User implements UserDetails {
 
     public void setSumMissions(int sumMissions) {
         this.sumMissions = sumMissions;
+    }
+
+    public Set<Prize> getOwnedPrizes() {
+        return ownedPrizes;
+    }
+
+    public void setOwnedPrizes(Set<Prize> ownedPrizes) {
+        this.ownedPrizes = ownedPrizes;
     }
 
     @Override

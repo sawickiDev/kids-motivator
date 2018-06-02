@@ -29,10 +29,10 @@
                         <li class="nav-item">
                             <a class="nav-link" href="${pageContext.request.contextPath}/dashboard"> Dashboard <span class="sr-only">(current)</span></a>
                         </li>
-                        <li class="nav-item active">
+                        <li class="nav-item">
                             <a class="nav-link" href="${pageContext.request.contextPath}/missions"> Missions </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item active">
                             <a class="nav-link" href="${pageContext.request.contextPath}/prizes"> Prizes </a>
                         </li>
                     </ul>
@@ -48,32 +48,34 @@
             <div class="container mt-5">
 
                 <c:choose>
-                    <c:when test="${allMissions != null && allMissions.size() > 0}">
+                    <c:when test="${prizesAvailable != null && prizesAvailable.size() > 0}">
                             <div class="row justify-content-center">
-                                    <c:forEach items="${allMissions}" var="miss" varStatus="status">
+                                <div class="col-10">
+                                    <h3>Available Prizes</h3>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                    <c:forEach items="${prizesAvailable}" var="avPrize" varStatus="status">
                                         <div class="col-4">
                                             <div class="card text-white bg-dark mb-3">
                                                 <div class="d-flex p-1">
                                                     <div class="mr-auto p-2 card-header" style="text-transform: uppercase">
-                                                        ${miss.title}
+                                                        ${avPrize.name}
                                                     </div>
-                                                    <a href="${pageContext.request.contextPath}/update-mission/${miss.id}" class="p-2" style="color:#189bb0;">
+                                                    <a href="${pageContext.request.contextPath}/update-prize/${avPrize.id}" class="p-2" style="color:#189bb0;">
                                                         <i class="material-icons">
                                                             cached
                                                         </i>
                                                     </a>
-                                                    <a href="${pageContext.request.contextPath}/delete-mission/${miss.id}" class="p-2" style="color:#b00003;">
+                                                    <a href="${pageContext.request.contextPath}/delete-prize/${avPrize.id}" class="p-2" style="color:#b00003;">
                                                         <i class="material-icons">
                                                             delete_forever
                                                         </i>
                                                     </a>
                                                 </div>
                                                 <div class="card-body">
-                                                    <h5 style="color: lawngreen">${miss.value} points</h5>
-                                                    <h6 class="card-title"><i>Deadline : </i>${miss.dateFormat}</h6>
-                                                    <h6 class="card-text"><i>Description: </i>${miss.description}</h6>
-                                                    <h6 class="card-text" style="color: yellow"><i>Stage: </i>${miss.stage}</h6>
-                                                    <h6 class="card-text"><i>Assignee: </i>${miss.assignedKid.userName}</h6>
+                                                    <h5 style="color: lawngreen">${avPrize.value} points</h5>
+                                                    <h6 class="card-title"><i>Taken By : </i>${avPrize.assignee.firstName} ${avPrize.assignee.lastName}</h6>
                                                 </div>
                                             </div>
                                         </div>
@@ -89,7 +91,59 @@
                                     </div>
                                     <div class="card-body">
                                         <blockquote class="blockquote mb-0">
-                                            <p>You have no missions to assign. Add one using form below</p>
+                                            <p>You have no Prizes Available. Add one or ask your parent to do so.</p>
+                                        </blockquote>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+                <c:choose>
+                    <c:when test="${prizesTaken != null && prizesTaken.size() > 0}">
+                        <div class="row justify-content-center">
+                            <div class="col-10">
+                                <h3>Taken Prizes</h3>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <c:forEach items="${prizesTaken}" var="tkPrize" varStatus="status">
+                                <div class="col-4">
+                                    <div class="card text-white bg-dark mb-3">
+                                        <div class="d-flex p-1">
+                                            <div class="mr-auto p-2 card-header" style="text-transform: uppercase">
+                                                    ${tkPrize.name}
+                                            </div>
+                                            <a href="${pageContext.request.contextPath}/update-prize/${tkPrize.id}" class="p-2" style="color:#189bb0;">
+                                                <i class="material-icons">
+                                                    cached
+                                                </i>
+                                            </a>
+                                            <a href="${pageContext.request.contextPath}/delete-prize/${tkPrize.id}" class="p-2" style="color:#b00003;">
+                                                <i class="material-icons">
+                                                    delete_forever
+                                                </i>
+                                            </a>
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 style="color: lawngreen">${tkPrize.value} points</h5>
+                                            <h6 class="card-title"><i>Taken By : </i>${tkPrize.assignee.firstName} ${tkPrize.assignee.lastName}</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="row justify-content-center">
+                            <div class="col-10">
+                                <div class="card text-white bg-dark mb-3">
+                                    <div class="card-header">
+                                        Ooops...
+                                    </div>
+                                    <div class="card-body">
+                                        <blockquote class="blockquote mb-0">
+                                            <p>You have no Prizes Available. Add one or ask your parent to do so.</p>
                                         </blockquote>
                                     </div>
                                 </div>
@@ -101,72 +155,46 @@
                     <div class="col-10">
                         <div class="card text-white bg-secondary mb-3">
                             <div class="card-header">
-                                Save Mission
+                                Save Prize
                             </div>
                             <div class="card-body">
                                 <form:form
-                                        modelAttribute="mission"
-                                        action="${pageContext.request.contextPath}/add-mission"
+                                        modelAttribute="prize"
+                                        action="${pageContext.request.contextPath}/add-prize"
                                         method="POST">
-                                    <c:if test="${saveMissionError == true}">
+                                    <c:if test="${savePrizeError == true}">
                                         <div class="alert alert-danger" role="alert">
-                                            COULDN'T CREATE MISSION
+                                            COULDN'T ADD PRIZE
                                         </div>
                                     </c:if>
+
                                     <form:input type="hidden"
                                                 path="id"/>
+
                                     <div class="form-group">
-                                        <label for="title-id">Mission Title</label>
+                                        <label for="title-id">Prize Name</label>
                                         <form:input type="text"
                                                     class="form-control"
                                                     id="title-id"
-                                                    placeholder="Mission Title"
-                                                    path="title" />
-                                        <form:errors path="title" cssStyle="color:#FF4C4C" />
+                                                    placeholder="Prize Name"
+                                                    path="name" />
+                                        <form:errors path="name" cssStyle="color:#FF4C4C" />
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="description-id">Mission Description</label>
-                                        <form:textarea  class="form-control"
-                                                        id="description-id"
-                                                        placeholder="Mission Description"
-                                                        path="description" />
-                                        <form:errors path="description" cssStyle="color:#FF4C4C" />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="value-id">Mission Value</label>
+                                        <label for="value-id">Prize Value</label>
                                         <form:input type="number"
                                                     class="form-control"
                                                     id="value-id"
-                                                    placeholder="Mission Description"
+                                                    placeholder="Prize Value"
                                                     path="value" />
                                         <form:errors path="value" cssStyle="color:#FF4C4C" />
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="deadline-id">Deadline (YYYY-MM-DD)</label>
-                                        <form:input type="text"
-                                                    class="form-control"
-                                                    id="deadline-id"
-                                                    placeholder="Deadline (YYYY-MM-DD)"
-                                                    path="dateFormat" />
-                                        <form:errors path="dateFormat" cssStyle="color:#FF4C4C" />
-                                    </div>
-
                                     <div class="form-group mb-3">
-                                        <label for="stage-id">Stage</label>
+                                        <label for="stage-id">Assignee</label>
                                         <form:select  cssClass="custom-select"
-                                                      path="stage"
-                                                      items="${stages}"
-                                                      id="stage-id">
-                                        </form:select>
-                                    </div>
-
-                                    <div class="form-group mb-3">
-                                        <label for="stage-id">Asignee</label>
-                                        <form:select  cssClass="custom-select"
-                                                      path="assignedId"
+                                                      path="assignee"
                                                       id="stage-id">
                                             <form:option value="-1" label="---Select---" />
                                             <form:options
