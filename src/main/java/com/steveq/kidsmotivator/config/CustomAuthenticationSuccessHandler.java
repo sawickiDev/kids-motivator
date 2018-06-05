@@ -1,12 +1,8 @@
 package com.steveq.kidsmotivator.config;
 
-import com.steveq.kidsmotivator.app.persistence.model.User;
-import com.steveq.kidsmotivator.app.persistence.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

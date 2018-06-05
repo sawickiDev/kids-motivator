@@ -1,8 +1,9 @@
 package com.steveq.kidsmotivator.app.prizes.model;
 
-import com.steveq.kidsmotivator.app.persistence.model.User;
+import com.steveq.kidsmotivator.app.auth.model.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -11,8 +12,9 @@ import javax.validation.constraints.Size;
 public class Prize {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "prizes_seq")
-    @SequenceGenerator(name = "prizes_seq", sequenceName = "prizes_seq", allocationSize = 1)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "prizes_seq")
+//    @SequenceGenerator(name = "prizes_seq", sequenceName = "prizes_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "prize_id")
     private int id;
 
@@ -22,6 +24,7 @@ public class Prize {
     private String name;
 
     @NotNull
+    @Min(value = 1)
     @Column(name = "prize_value")
     private int value;
 
@@ -35,7 +38,10 @@ public class Prize {
 
     public Prize() {}
 
-    public Prize(String name, int value, User owner, User assignee) {
+    public Prize(String name,
+                 int value,
+                 User owner,
+                 User assignee) {
         this.name = name;
         this.value = value;
         this.owner = owner;

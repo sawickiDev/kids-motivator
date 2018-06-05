@@ -1,55 +1,28 @@
 package com.steveq.kidsmotivator.app.prizes.service;
 
-import com.steveq.kidsmotivator.app.persistence.model.User;
-import com.steveq.kidsmotivator.app.persistence.service.UserService;
+import com.steveq.kidsmotivator.app.auth.model.User;
+import com.steveq.kidsmotivator.app.auth.service.UserService;
 import com.steveq.kidsmotivator.app.prizes.dao.PrizesRepository;
 import com.steveq.kidsmotivator.app.prizes.model.Prize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class PrizesServiceImpl implements PrizesService {
 
-    @Autowired
     private PrizesRepository prizesRepository;
-
-    @Autowired
     private UserService userService;
 
-    @Override
-    public List<Prize> getPrizesByOwner(Set<User> parents) {
-        if (parents != null)
-            return prizesRepository.findAllByOwner(parents);
-        return null;
-    }
-
-    @Override
-    public List<Prize> getPrizesNotAssigned() {
-        return prizesRepository.findAllByAssigneeIsNull();
-    }
-
-    @Override
-    public List<Prize> getPrizesByAssignedKid(User assignee) {
-        if (assignee != null)
-            return prizesRepository.findAllByAssignee(assignee);
-        return null;
-    }
-
-    @Override
-    public List<Prize> getPrizesAvailableByOwner(Set<User> parents) {
-        if (parents != null)
-            return prizesRepository.findAllByOwnerAndAssigneeIsNull(parents);
-        return null;
-    }
-
-    @Override
-    public List<Prize> getPrizesTakenByOwner(Set<User> parents) {
-        if (parents != null)
-            return prizesRepository.findAllByOwnerAndAssigneeIsNotNull(parents);
-        return null;
+    @Autowired
+    public PrizesServiceImpl(PrizesRepository prizesRepository,
+                             UserService userService) {
+        this.prizesRepository = prizesRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -78,6 +51,26 @@ public class PrizesServiceImpl implements PrizesService {
     public Prize findById(int prizeId) {
         if (prizeId >= 0)
             return prizesRepository.findFirstById(prizeId);
-        return null;
+        return new Prize();
+    }
+
+    @Override
+    public List<Prize> getPrizesAvailable(User user) {
+        if (userService.isUserParent(user))
+            return prizesRepository.findAllByOwnerAndAssigneeIsNull(Stream.of(user).collect(Collectors.toSet()));
+        else if (userService.isUserKid(user))
+            return prizesRepository.findAllByOwnerAndAssigneeIsNull(user.getParents());
+
+        return new ArrayList<>();
+    }
+
+    @Override
+    public List<Prize> getPrizesTaken(User user) {
+        if (userService.isUserParent(user))
+            return prizesRepository.findAllByOwnerAndAssigneeIsNotNull(Stream.of(user).collect(Collectors.toSet()));
+        else if (userService.isUserKid(user))
+            return prizesRepository.findAllByAssignee(user);
+
+        return new ArrayList<>();
     }
 }

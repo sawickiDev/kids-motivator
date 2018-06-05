@@ -1,6 +1,6 @@
 package com.steveq.kidsmotivator.app.prizes.dao;
 
-import com.steveq.kidsmotivator.app.persistence.model.User;
+import com.steveq.kidsmotivator.app.auth.model.User;
 import com.steveq.kidsmotivator.app.prizes.model.Prize;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

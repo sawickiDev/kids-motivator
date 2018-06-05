@@ -1,7 +1,7 @@
-
 drop table users_table cascade;
 drop table passwords_table cascade;
 drop table roles_table cascade;
 drop table parent_child_table cascade;
 drop table user_role_table cascade;
 drop table missions_table cascade;
+drop table prizes_table cascade;

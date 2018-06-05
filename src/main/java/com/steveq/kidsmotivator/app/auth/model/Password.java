@@ -1,4 +1,4 @@
-package com.steveq.kidsmotivator.app.persistence.model;
+package com.steveq.kidsmotivator.app.auth.model;
 
 import com.steveq.kidsmotivator.app.dashboard.validation.ValidPassword;
 
@@ -12,18 +12,20 @@ import javax.validation.constraints.Size;
 public class Password {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pass_seq")
-    @SequenceGenerator(name = "pass_seq", sequenceName = "passwords_seq", allocationSize = 1)
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pass_seq")
+//    @SequenceGenerator(name = "pass_seq", sequenceName = "passwords_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "password_id")
     private int id;
 
     @NotNull
-    @Size(min = 3, max = 100)
+    @Size(min = 3, max = 30)
     @Column(name = "password")
     private String password;
 
     @Transient
+    @NotNull
+    @Size(min = 3, max = 30)
     private String confirmPassword;
 
     public Password(){}
@@ -61,6 +63,7 @@ public class Password {
         return "Password{" +
                 "id=" + id +
                 ", password='" + password + '\'' +
+                ", confirmPassword='" + confirmPassword + '\'' +
                 '}';
     }
 }

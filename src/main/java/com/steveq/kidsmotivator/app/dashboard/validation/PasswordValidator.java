@@ -1,6 +1,6 @@
 package com.steveq.kidsmotivator.app.dashboard.validation;
 
-import com.steveq.kidsmotivator.app.persistence.model.Password;
+import com.steveq.kidsmotivator.app.auth.model.Password;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -9,7 +9,7 @@ public class PasswordValidator implements ConstraintValidator<ValidPassword, Obj
 
     @Override
     public void initialize(ValidPassword constraintAnnotation) {
-
+        // intentionally blank
     }
 
     @Override

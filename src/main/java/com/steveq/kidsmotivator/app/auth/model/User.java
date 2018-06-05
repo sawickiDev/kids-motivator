@@ -1,6 +1,5 @@
-package com.steveq.kidsmotivator.app.persistence.model;
+package com.steveq.kidsmotivator.app.auth.model;
 
-import com.steveq.kidsmotivator.app.dashboard.validation.ValidPassword;
 import com.steveq.kidsmotivator.app.missions.model.Mission;
 import com.steveq.kidsmotivator.app.prizes.model.Prize;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,30 +11,33 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users_table")
 public class User implements UserDetails {
 
+    // table mapping
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
-    @SequenceGenerator(name = "user_seq", sequenceName = "users_seq", allocationSize = 1)
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+//    @SequenceGenerator(name = "user_seq", sequenceName = "users_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private int id;
 
     @NotNull
-    @Size(min = 2, max = 30)
+    @Size(min = 3, max = 30)
     @Column(name = "first_name")
     private String firstName;
 
     @NotNull
-    @Size(min = 2, max = 30)
+    @Size(min = 3, max = 30)
     @Column(name = "last_name")
     private String lastName;
 
     @NotNull
-    @Size(min = 2, max = 30)
+    @Size(min = 3, max = 30)
     @Column(name = "user_name")
     private String userName;
 
@@ -80,20 +82,33 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "assignee")
     private Set<Prize> takenPrizes;
 
+    // table mapping
+
+
+    //helper fields
+
     @Transient
     private int sumPoints;
 
     @Transient
     private int sumMissions;
 
+    // helper fields
+
+
     public User(){}
 
-    public User(String firstName, String lastName, Boolean active, Password password) {
+    public User(String firstName,
+                String lastName,
+                Boolean active,
+                Password password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.active = active;
         this.pass = password;
     }
+
+    // getters - setters
 
     public int getId() {
         return id;
@@ -251,16 +266,9 @@ public class User implements UserDetails {
         this.ownedPrizes = ownedPrizes;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", userName='" + userName + '\'' +
-                ", active=" + active +
-                '}';
-    }
+    // getters - setters
+
+    // interface methods
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -299,5 +307,29 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return getActive();
+    }
+
+    // interface methods
+
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", userName='" + userName + '\'' +
+                ", active=" + active +
+                ", pass=" + pass.getPassword() +
+                ", roles=" + roles.stream().map(Role::getId).collect(Collectors.toList()) +
+                ", children=" + children.stream().map(User::getId).collect(Collectors.toList()) +
+                ", parents=" + parents.stream().map(User::getId).collect(Collectors.toList()) +
+                ", missions=" + missions.stream().map(Mission::getId).collect(Collectors.toList()) +
+                ", ownedMissions=" + ownedMissions.stream().map(Mission::getId).collect(Collectors.toList()) +
+                ", ownedPrizes=" + ownedPrizes.stream().map(Prize::getId).collect(Collectors.toList()) +
+                ", takenPrizes=" + takenPrizes.stream().map(Prize::getId).collect(Collectors.toList()) +
+                ", sumPoints=" + sumPoints +
+                ", sumMissions=" + sumMissions +
+                '}';
     }
 }

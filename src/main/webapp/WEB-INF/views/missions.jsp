@@ -51,7 +51,7 @@
             <div class="container mt-5">
                 <sec:authorize access="hasAuthority('KID')">
                     <div class="row justify-content-center">
-                        <h2 style="color:lawngreen">Points Balance : ${curUser.sumPoints}</h2>
+                        <h2 style="color:lawngreen">Points Balance : ${pointsBalance}</h2>
                     </div>
                 </sec:authorize>
                 <c:choose>

@@ -1,9 +1,9 @@
-package com.steveq.kidsmotivator.app.persistence.service;
+package com.steveq.kidsmotivator.app.auth.service;
 
-import com.steveq.kidsmotivator.app.persistence.dao.RoleRepository;
-import com.steveq.kidsmotivator.app.persistence.dao.UserRepository;
-import com.steveq.kidsmotivator.app.persistence.model.Role;
-import com.steveq.kidsmotivator.app.persistence.model.User;
+import com.steveq.kidsmotivator.app.auth.dao.RoleRepository;
+import com.steveq.kidsmotivator.app.auth.dao.UserRepository;
+import com.steveq.kidsmotivator.app.auth.model.Role;
+import com.steveq.kidsmotivator.app.auth.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,26 +13,31 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
     private UserRepository userRepository;
-
-    @Autowired
     private RoleRepository roleRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    public UserServiceImpl(UserRepository userRepository,
+                           RoleRepository roleRepository,
+                           PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = null;
 
-        if (s.length() > 3)
+        if (s != null)
             user = userRepository.findByUserName(s);
 
         if (user == null)
@@ -46,20 +51,25 @@ public class UserServiceImpl implements UserService {
         User persistedUser = null;
         User parentUser = this.getCurrentlyLoggedUser();
 
+        // set default role - KID
+        // set parent
         Role kidRole = roleRepository.findRoleByRole("KID");
         user.addRole(kidRole);
         user.addParent(parentUser);
-        System.out.println("ENCODED PASS :: " + passwordEncoder.encode(user.getPass().getPassword()));
+
+        // encode password before save
         String encodedPassword = passwordEncoder.encode(user.getPass().getPassword());
         user.getPass().setPassword(encodedPassword);
         user.getPass().setConfirmPassword(encodedPassword);
 
+        // insert contact operation
         try{
             persistedUser = userRepository.save(user);
         } catch (Exception ex){
             ex.printStackTrace();
         }
 
+        // update parent's children relation
         if(persistedUser != null) {
             parentUser.addChildren(persistedUser);
             userRepository.save(parentUser);
@@ -69,13 +79,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getKidsForParent() {
-        User parent = this.getCurrentlyLoggedUser();
-        List<User> parents = new ArrayList<>();
-        parents.add(parent);
-        System.out.println("PARENTS :: " + parents);
-        List<User> kids = userRepository.findAllByParentsContains(parents);
-        System.out.println("KIDS :: " + kids);
+    public List<User> getKidsForUser(User user) {
+        List<User> kids = new ArrayList<>();
+
+        if (this.isUserParent(user))
+            kids = userRepository.findAllByParentsContains(Stream.of(user).collect(Collectors.toList()));
 
         return kids;
     }
@@ -108,12 +116,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getCurrentlyLoggedUser() {
-
         String currentlyLoggedUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        System.out.println("CURRENTLY LOGGED :: " + currentlyLoggedUsername);
-        User currentlyLoggedUser = (User)loadUserByUsername(currentlyLoggedUsername);
-        System.out.println("CURRENTLY LOGGED :: " + currentlyLoggedUser.getAuthorities());
-
-        return currentlyLoggedUser;
+        return (User)loadUserByUsername(currentlyLoggedUsername);
     }
 }

@@ -1,4 +1,4 @@
-package com.steveq.kidsmotivator.app.login;
+package com.steveq.kidsmotivator.app.auth;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
