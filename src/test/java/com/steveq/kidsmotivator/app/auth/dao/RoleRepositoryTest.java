@@ -1,16 +1,17 @@
 package com.steveq.kidsmotivator.app.auth.dao;
 
 import com.steveq.kidsmotivator.app.auth.model.Role;
+import com.steveq.kidsmotivator.factory.UserDataFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -24,11 +25,8 @@ public class RoleRepositoryTest {
 
     @Before
     public void setUp() throws Exception {
-        Role role = new Role();
-        role.setRole("PARENT");
-
+        Role role = UserDataFactory.createSimpleRole("PARENT");
         entityManager.persist(role);
-        entityManager.flush();
     }
 
     @Test

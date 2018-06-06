@@ -30,16 +30,13 @@ public class Password {
 
     public Password(){}
 
-    public Password(String password) {
-        this.password = password;
-    }
-
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
-        this.id = id;
+        if (id >= 0)
+            this.id = id;
     }
 
     public String getPassword() {
