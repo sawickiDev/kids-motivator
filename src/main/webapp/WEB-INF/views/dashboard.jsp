@@ -52,9 +52,21 @@
                         <c:forEach items="${kidsList}" var="kid">
                             <div class="col-4">
                                 <div class="card text-white bg-dark mb-3">
-                                    <div class="d-flex p-1">
-                                        <div class="mr-auto p-2 card-header" style="text-transform: uppercase">
+                                    <div>
+                                        <div class="mr-auto p-2 card-header d-flex p-1 justify-content-between" style="text-transform: uppercase">
                                                 ${kid.firstName} ${kid.lastName}
+                                            <a href="${pageContext.request.contextPath}/toggle-kid-active/${kid.id}" style="color:#189bb0;">
+                                                <c:if test="${kid.active == true}">
+                                                    <i class="material-icons">
+                                                        visibility
+                                                    </i>
+                                                </c:if>
+                                                <c:if test="${kid.active == false}">
+                                                    <i class="material-icons">
+                                                        visibility_off
+                                                    </i>
+                                                </c:if>
+                                            </a>
                                         </div>
                                     </div>
                                     <div class="card-body">

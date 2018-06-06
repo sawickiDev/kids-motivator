@@ -89,6 +89,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getActiveKidsForUser(User user) {
+        List<User> kids = new ArrayList<>();
+
+        if (this.isUserParent(user))
+            kids = userRepository.findAllByParentsContainsAndActiveIsTrue(Stream.of(user).collect(Collectors.toList()));
+
+        return kids;
+    }
+
+    @Override
     public User getUserById(Integer id) {
         if (id != null)
             return userRepository.findUserById(id);

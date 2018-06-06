@@ -43,7 +43,7 @@ public class MissionController {
         }
 
         List<Mission> missions = missionService.getAllByOwner(currentUser);
-        model.addAttribute("kidsAvailable", userService.getKidsForUser(currentUser));
+        model.addAttribute("kidsAvailable", userService.getActiveKidsForUser(currentUser));
         model.addAttribute("curUser", currentUser);
         model.addAttribute("stages", missionService.getStagesByUser(currentUser));
         model.addAttribute("allMissions", missions);

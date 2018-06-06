@@ -10,5 +10,6 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Integer> {
     User findByUserName(String username);
     List<User> findAllByParentsContains(List<User> parents);
+    List<User> findAllByParentsContainsAndActiveIsTrue(List<User> parents);
     User findUserById(Integer id);
 }

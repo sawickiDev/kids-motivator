@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
@@ -35,6 +36,16 @@ public class DashboardController {
         model.addAttribute("kidsList", userService.getKidsForUser(userService.getCurrentlyLoggedUser()));
 
         return "dashboard";
+    }
+
+    @GetMapping("/toggle-kid-active/{kidId}")
+    public String toggleKidActive(@PathVariable("kidId") String kidId) {
+        System.out.println("TOGGLE ACTIVE :: " + kidId);
+        User kid = userService.getUserById(Integer.valueOf(kidId));
+        kid.setActive(!kid.getActive());
+        userService.saveUser(kid);
+
+        return "redirect:/dashboard";
     }
 
     @PostMapping("/register-kid")
