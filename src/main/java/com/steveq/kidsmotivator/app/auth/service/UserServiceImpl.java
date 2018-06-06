@@ -5,6 +5,7 @@ import com.steveq.kidsmotivator.app.auth.dao.UserRepository;
 import com.steveq.kidsmotivator.app.auth.model.Role;
 import com.steveq.kidsmotivator.app.auth.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -65,8 +66,8 @@ public class UserServiceImpl implements UserService {
         // insert contact operation
         try{
             persistedUser = userRepository.save(user);
-        } catch (Exception ex){
-            ex.printStackTrace();
+        } catch (DataIntegrityViolationException dive){
+            dive.printStackTrace();
         }
 
         // update parent's children relation
@@ -103,7 +104,7 @@ public class UserServiceImpl implements UserService {
         if (id != null)
             return userRepository.findUserById(id);
 
-        return null;
+        return new User();
     }
 
     @Override

@@ -16,9 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class MissionController {
@@ -37,7 +35,6 @@ public class MissionController {
     public String openMissionPage (Model model) {
         User currentUser = userService.getCurrentlyLoggedUser();
 
-        System.out.println("CONTAINS MISSION :: " + model.containsAttribute("mission"));
         if(!model.containsAttribute("mission")){
             model.addAttribute("mission", new Mission());
         }
