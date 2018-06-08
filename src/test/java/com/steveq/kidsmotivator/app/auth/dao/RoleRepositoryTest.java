@@ -1,7 +1,7 @@
 package com.steveq.kidsmotivator.app.auth.dao;
 
 import com.steveq.kidsmotivator.app.auth.model.Role;
-import com.steveq.kidsmotivator.factory.UserDataFactory;
+import com.steveq.kidsmotivator.factory.TestDataFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +25,7 @@ public class RoleRepositoryTest {
 
     @Before
     public void setUp() throws Exception {
-        Role role = UserDataFactory.createSimpleRole("PARENT");
+        Role role = TestDataFactory.createSimpleRole("PARENT");
         entityManager.persist(role);
     }
 

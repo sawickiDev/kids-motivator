@@ -1,7 +1,7 @@
 package com.steveq.kidsmotivator.app.auth.dao;
 
 import com.steveq.kidsmotivator.app.auth.model.User;
-import com.steveq.kidsmotivator.factory.UserDataFactory;
+import com.steveq.kidsmotivator.factory.TestDataFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,17 +30,17 @@ public class UserRepositoryTest {
     public void setUp() throws Exception
     {
 
-        User kid = UserDataFactory.createSimpleUser("kid1", "test", "KID");
+        User kid = TestDataFactory.createSimpleUser("kid1", "test", "KID");
         entityManager.persist(kid);
 
-        User parent = UserDataFactory.createSimpleUser("parent1", "test", "PARENT");
+        User parent = TestDataFactory.createSimpleUser("parent1", "test", "PARENT");
         parent.addChildren(kid);
         entityManager.persist(parent);
 
-        kid = UserDataFactory.createSimpleUser("kid2", "test", "KID");
+        kid = TestDataFactory.createSimpleUser("kid2", "test", "KID");
         entityManager.persist(kid);
 
-        parent = UserDataFactory.createSimpleUser("parent2", "test", "PARENT");
+        parent = TestDataFactory.createSimpleUser("parent2", "test", "PARENT");
         parent.addChildren(kid);
         entityManager.persist(parent);
         entityManager.flush();

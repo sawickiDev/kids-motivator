@@ -1,7 +1,5 @@
 package com.steveq.kidsmotivator.app.auth.model;
 
-import com.steveq.kidsmotivator.app.missions.model.Mission;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -30,16 +28,17 @@ public class Role {
 
     public Role() {}
 
-    public Role(String role) {
-        this.role = role;
-    }
-
-    public int getId() {
+    public int getId()
+    {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int id)
+    {
+        if (id >= 0)
+            this.id = id;
+        else
+            this.id = -1;
     }
 
     public String getRole() {

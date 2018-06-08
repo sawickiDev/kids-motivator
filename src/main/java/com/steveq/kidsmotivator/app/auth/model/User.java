@@ -71,16 +71,16 @@ public class User implements UserDetails {
     private Set<User> parents = new HashSet<>();
 
     @OneToMany(mappedBy = "assignedKid")
-    private Set<Mission> missions;
+    private Set<Mission> missions = new HashSet<>();;
 
     @OneToMany(mappedBy = "owner")
-    private Set<Mission> ownedMissions;
+    private Set<Mission> ownedMissions = new HashSet<>();;
 
     @OneToMany(mappedBy = "owner")
-    private Set<Prize> ownedPrizes;
+    private Set<Prize> ownedPrizes = new HashSet<>();;
 
     @OneToMany(mappedBy = "assignee")
-    private Set<Prize> takenPrizes;
+    private Set<Prize> takenPrizes = new HashSet<>();;
 
     // table mapping
 
@@ -97,16 +97,6 @@ public class User implements UserDetails {
 
 
     public User(){}
-
-    public User(String firstName,
-                String lastName,
-                Boolean active,
-                Password password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.active = active;
-        this.pass = password;
-    }
 
     // getters - setters
 
@@ -182,10 +172,6 @@ public class User implements UserDetails {
         }
     }
 
-    public void setChildren(Set<User> children) {
-        this.children = children;
-    }
-
     public void addParent(User parent) {
         if (parent != null) {
             this.parents.add(parent);
@@ -194,10 +180,6 @@ public class User implements UserDetails {
 
     public Set<User> getParents() {
         return parents;
-    }
-
-    public void setParents(Set<User> parents) {
-        this.parents = parents;
     }
 
     public Set<Mission> getMissions() {
@@ -225,8 +207,9 @@ public class User implements UserDetails {
         return takenPrizes;
     }
 
-    public void setTakenPrizes(Set<Prize> takenPrizes) {
-        this.takenPrizes = takenPrizes;
+    public void addTakenPrize(Prize prize) {
+        if (prize != null)
+            this.takenPrizes.add(prize);
     }
 
     public int getSumPoints() {
@@ -241,10 +224,6 @@ public class User implements UserDetails {
         return sum;
     }
 
-    public void setSumPoints(int sumPoints) {
-        this.sumPoints = sumPoints;
-    }
-
     public int getSumMissions() {
         int sum = 0;
         for (Mission mission : this.missions) {
@@ -252,10 +231,6 @@ public class User implements UserDetails {
                 sum += 1;
         }
         return sum;
-    }
-
-    public void setSumMissions(int sumMissions) {
-        this.sumMissions = sumMissions;
     }
 
     public Set<Prize> getOwnedPrizes() {

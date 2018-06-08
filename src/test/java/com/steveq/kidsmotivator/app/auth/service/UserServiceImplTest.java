@@ -57,7 +57,6 @@ public class UserServiceImplTest {
         sampleCorrectUser.setMissions(new HashSet<>());
         sampleCorrectUser.setOwnedMissions(new HashSet<>());
         sampleCorrectUser.setOwnedPrizes(new HashSet<>());
-        sampleCorrectUser.setTakenPrizes(new HashSet<>());
 
         given(this.userRepository.findByUserName(anyString())).willReturn(sampleCorrectUser);
     }
